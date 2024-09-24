@@ -34,7 +34,7 @@ prepare_pkg:
 	if [[ ! -d cache/wasi-vfs ]]; then \
 		git clone https://github.com/kateinoigakukun/wasi-vfs.git cache/wasi-vfs --recurse-submodules  &&\
 		cd cache/wasi-vfs &&\
-		git checkout "${WIZER_VFS_VERSION}" \
+		git checkout "${WASI_VFS_VERSION}" \
 	; fi
 	if [[ ! -d cache/wizer ]]; then \
 		git clone https://github.com/bytecodealliance/wizer cache/wizer &&\
