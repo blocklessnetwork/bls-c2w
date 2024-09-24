@@ -36,7 +36,7 @@ jobs:
         with:
           registry: gcr.io
           username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
+          password: ${{ secrets.TOKEN }}
       - name: build
         run: |
           cd script
