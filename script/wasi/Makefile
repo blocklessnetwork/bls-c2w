@@ -21,7 +21,7 @@ else
 	; fi
 
 	if [[ ! -d cache/wasi-vfs ]]; then \
-		git clone https://github.com/kateinoigakukun/wasi-vfs.git --recurse-submodules cache/wasi-vfs &&\
+		git clone https://github.com/kateinoigakukun/wasi-vfs.git cache/wasi-vfs --recurse-submodules  &&\
 		cd cache/wasi-vfs &&\
 		git checkout "${WASI_VFS_VERSION}" \
 	; fi
