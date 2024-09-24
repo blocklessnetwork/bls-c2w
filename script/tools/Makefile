@@ -1,28 +1,34 @@
-SHELL := /bin/bash
-WIZER_VFS_VERSION=v0.3.0
+include ../inc.mk
+PREPARED_PKG?=false
 IMAGE_NAME=bls-c2w-tools
-WIZER_VERSION=04e49c989542f2bf3a112d60fbf88a62cce2d0d0
 
 all: build
 
 build:
-        if [[ ! -d assets ]]; then git clone -b v0.6.5 https://github.com/ktock/container2wasm assets; fi
-        if [[ ! -d wasi-vfs ]]; then \
-                git clone https://github.com/kateinoigakukun/wasi-vfs.git --recurse-submodules &&\
-                cd wasi-vfs &&\
-                git checkout "${WIZER_VFS_VERSION}" \
-        ; fi
-        if [[ ! -d wizer ]]; then \
-                git clone https://github.com/bytecodealliance/wizer &&\
-                cd wizer &&\
-                git checkout "${WIZER_VERSION}" \
-        ; fi
-
-        docker build -t joing/${IMAGE_NAME}  -f Dockerfile . --progress=plain
+	mkdir cache -p
+	cd cache
+ifeq ($(PREPARED_PKG), true)
+	cp -rf ../cache/assets cache/ 
+	cp -rf ../cache/wasi-vfs cache/ 
+	cp -rf ../cache/wizer cache/ 
+else
+	if [[ ! -d cache/assets ]]; then git clone -b v0.6.5 https://github.com/ktock/container2wasm cache/assets; fi
+	if [[ ! -d cache/wasi-vfs ]]; then \
+		git clone https://github.com/kateinoigakukun/wasi-vfs.git --recurse-submodules cache/wasi-vfs &&\
+		cd  cache/wasi-vfs &&\
+		git checkout "${WIZER_VFS_VERSION}" \
+	; fi
+	if [[ ! -d  cache/wizer ]]; then \
+		git clone https://github.com/bytecodealliance/wizer  cache/wizer &&\
+		cd cache/wizer &&\
+		git checkout "${WIZER_VERSION}" \
+	; fi
+endif
+	docker build -t joing/${IMAGE_NAME}  -f Dockerfile cache --progress=plain
 
 push:
-        docker push joing/${IMAGE_NAME}
+	docker push joing/${IMAGE_NAME}
 
 clean:
-        rm -rf wizer
+	rm -rf wizer
 
