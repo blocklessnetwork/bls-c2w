@@ -32,7 +32,7 @@ prepare_pkg:
 		git checkout ${BOCHS_REPO_VERSION} \
 	; fi
 	if [[ ! -d cache/wasi-vfs ]]; then \
-		git clone https://github.com/kateinoigakukun/wasi-vfs.git --recurse-submodules cache/wasi-vfs &&\
+		git clone https://github.com/kateinoigakukun/wasi-vfs.git cache/wasi-vfs --recurse-submodules  &&\
 		cd cache/wasi-vfs &&\
 		git checkout "${WIZER_VFS_VERSION}" \
 	; fi

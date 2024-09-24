@@ -14,7 +14,7 @@ ifeq ($(PREPARED_PKG), true)
 else
 	if [[ ! -d cache/assets ]]; then git clone -b v0.6.5 https://github.com/ktock/container2wasm cache/assets; fi
 	if [[ ! -d cache/wasi-vfs ]]; then \
-		git clone https://github.com/kateinoigakukun/wasi-vfs.git --recurse-submodules cache/wasi-vfs &&\
+		git clone https://github.com/kateinoigakukun/wasi-vfs.git  cache/wasi-vfs --recurse-submodules &&\
 		cd  cache/wasi-vfs &&\
 		git checkout "${WIZER_VFS_VERSION}" \
 	; fi
