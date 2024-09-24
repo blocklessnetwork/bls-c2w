@@ -1,29 +1,12 @@
-ARG RUSTUP_DIST_SERVER=https://rsproxy.cn
-ARG RUSTUP_UPDATE_ROOT=https://rsproxy.cn/rustup
-ARG GOPROXY=https://goproxy.cn
+ARG GOPROXY=
 
 FROM scratch AS assets
 COPY . .
 
 FROM rust:1.74.1-buster AS rust-common
-ARG RUSTUP_DIST_SERVER
-ARG RUSTUP_UPDATE_ROOT
-COPY <<-EOF /etc/sources.list
-deb http://mirrors.ustc.edu.cn/debian/ buster main
-deb http://mirrors.ustc.edu.cn/debian/debian-security buster/updates main
-deb http://mirrors.ustc.edu.cn/debian/debian buster-updates main
-EOF
 RUN apt-get update -y
 WORKDIR /work
 COPY --link --from=assets wasi-vfs  wasi-vfs
-COPY <<-EOF /work/wasi-vfs/.cargo/config.toml
-[source.crates-io]
-registry = "https://github.com/rust-lang/crates.io-index"
-
-replace-with = 'tuna'
-[source.tuna]
-registry = "https://mirrors.tuna.tsinghua.edu.cn/git/crates.io-index.git"
-EOF
 RUN cd wasi-vfs &&\
     cargo build --package wasi-vfs-cli --release && \
     mkdir -p /tools/wasi-vfs/  && \
@@ -32,14 +15,6 @@ RUN cd wasi-vfs &&\
 
 WORKDIR /work
 COPY --link --from=assets wizer wizer
-COPY <<-EOF /work/wizer/.cargo/config.toml
-[source.crates-io]
-registry = "https://github.com/rust-lang/crates.io-index"
-
-replace-with = 'tuna'
-[source.tuna]
-registry = "https://mirrors.tuna.tsinghua.edu.cn/git/crates.io-index.git"
-EOF
 WORKDIR /work/wizer/
 RUN cargo build --bin wizer --all-features --release && \
     RUSTFLAGS="-C link-arg=-s" cargo build --bin wizer --all-features && \
