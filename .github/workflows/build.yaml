@@ -1,4 +1,7 @@
 on:
+  pull_request:
+    branches:
+      - main
   workflow_dispatch:
 
 name: Build Release Linux
