@@ -47,10 +47,10 @@ else
 		curl -o cache/binaryen.tar.gz -L https://github.com/WebAssembly/binaryen/releases/download/version_${BINARYEN_VERSION}/binaryen-version_${BINARYEN_VERSION}-x86_64-linux.tar.gz \
 	; fi
 endif
-	docker build -t joing/${IMAGE_NAME}  -f Dockerfile cache
+	docker build -t blocklessnetwork/${IMAGE_NAME}  -f Dockerfile cache
 
 push:
-	docker push joing/${IMAGE_NAME}
+	docker push ghcr.io/blocklessnetwork/${IMAGE_NAME}
 
 clean:
 	rm -rf binaryen.tar.gz tinyemu wasi-vfs wasi-sdk.tar.gz wizer.h Bochs

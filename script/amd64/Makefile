@@ -43,10 +43,10 @@ else
 		git checkout ${BOCHS_REPO_VERSION} \
 	; fi
 endif
-	docker build -t joing/${IMAGE_NAME}  -f Dockerfile cache
+	docker build -t blocklessnetwork/${IMAGE_NAME}  -f Dockerfile cache
 
 push:
-	docker push joing/${IMAGE_NAME}
+	docker push ghcr.io/blocklessnetwork/${IMAGE_NAME}
 
 clean:
 	rm -rf grub-${GRUB_VERSION}.tar.gz

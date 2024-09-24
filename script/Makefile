@@ -1,7 +1,7 @@
 include inc.mk
 export PREPARED_PKG=true
 
-all: amd riscv tools wasi
+all: tools wasi amd riscv 
 
 prepare_pkg:
 	mkdir cache -p
