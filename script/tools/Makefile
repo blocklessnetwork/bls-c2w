@@ -12,19 +12,19 @@ ifeq ($(PREPARED_PKG), true)
 	cp -rf ../cache/wasi-vfs . 
 	cp -rf ../cache/wizer . 
 else
-	if [[ ! -d assets ]]; then git clone -b v0.6.5 https://github.com/ktock/container2wasm assets; fi
-	if [[ ! -d wasi-vfs ]]; then \
-		git clone https://github.com/kateinoigakukun/wasi-vfs.git --recurse-submodules &&\
-		cd wasi-vfs &&\
+	if [[ ! -d cache/assets ]]; then git clone -b v0.6.5 https://github.com/ktock/container2wasm cache/assets; fi
+	if [[ ! -d cache/wasi-vfs ]]; then \
+		git clone https://github.com/kateinoigakukun/wasi-vfs.git --recurse-submodules cache/wasi-vfs &&\
+		cd  cache/wasi-vfs &&\
 		git checkout "${WIZER_VFS_VERSION}" \
 	; fi
-	if [[ ! -d wizer ]]; then \
-		git clone https://github.com/bytecodealliance/wizer &&\
-		cd wizer &&\
+	if [[ ! -d  cache/wizer ]]; then \
+		git clone https://github.com/bytecodealliance/wizer  cache/wizer &&\
+		cd cache/wizer &&\
 		git checkout "${WIZER_VERSION}" \
 	; fi
 endif
-	docker build -t joing/${IMAGE_NAME}  -f Dockerfile . --progress=plain
+	docker build -t joing/${IMAGE_NAME}  -f Dockerfile cache --progress=plain
 
 push:
 	docker push joing/${IMAGE_NAME}
