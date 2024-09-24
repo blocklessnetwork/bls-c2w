@@ -8,13 +8,13 @@ build-linux:
 	mkdir cache -p
 	cd cache
 ifeq ($(PREPARED_PKG), true)
-	cp -rf ../cache/linux.tar.gz . 
-	cp -rf ../cache/assets . 
-	cp -rf ../cache/busybox-${BUSYBOX_VERSION}.tar.bz . 
-	cp -rf ../cache/tini.tar.gz . 
-	cp -rf ../cache/runc.tar.gz . 
-	cp -rf ../cache/vmtouch.tar.gz . 
-	cp -rf ../cache/riscv-pk . 
+	cp -rf ../cache/linux.tar.gz cache/ 
+	cp -rf ../cache/assets cache/ 
+	cp -rf ../cache/busybox-${BUSYBOX_VERSION}.tar.bz cache/
+	cp -rf ../cache/tini.tar.gz cache/ 
+	cp -rf ../cache/runc.tar.gz cache/ 
+	cp -rf ../cache/vmtouch.tar.gz cache/ 
+	cp -rf ../cache/riscv-pk cache/ 
 else
 	if [[ ! -f cache/linux.tar.gz ]]; then \
 		curl -Lo cache/linux.tar.gz https://github.com/torvalds/linux/archive/refs/tags/v6.1.tar.gz \
@@ -41,8 +41,8 @@ endif
 	docker build --build-arg TARGETARCH=amd64 -t joing/${IMAGE_NAME} -f Dockerfile cache
 
 push:
-        docker push joing/${IMAGE_NAME}
+	docker push joing/${IMAGE_NAME}
 
 clean:
-        rm -rf assets  busybox-${BUSYBOX_VERSION}.tar.bz  linux.tar.gz  riscv-pk  runc.tar.gz  tini.tar.gz  vmtouch.tar.gz
+	rm -rf assets  busybox-${BUSYBOX_VERSION}.tar.bz  linux.tar.gz  riscv-pk  runc.tar.gz  tini.tar.gz  vmtouch.tar.gz
 

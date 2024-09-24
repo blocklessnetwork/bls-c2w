@@ -8,9 +8,9 @@ build:
 	mkdir cache -p
 	cd cache
 ifeq ($(PREPARED_PKG), true)
-	cp -rf ../cache/assets . 
-	cp -rf ../cache/wasi-vfs . 
-	cp -rf ../cache/wizer . 
+	cp -rf ../cache/assets cache/ 
+	cp -rf ../cache/wasi-vfs cache/ 
+	cp -rf ../cache/wizer cache/ 
 else
 	if [[ ! -d cache/assets ]]; then git clone -b v0.6.5 https://github.com/ktock/container2wasm cache/assets; fi
 	if [[ ! -d cache/wasi-vfs ]]; then \

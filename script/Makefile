@@ -1,7 +1,7 @@
 include inc.mk
 export PREPARED_PKG=true
 
-all: amd c2w riscv64 tools wasi
+all: amd riscv tools wasi
 
 prepare_pkg:
 	mkdir cache -p
@@ -55,12 +55,12 @@ prepare_pkg:
 	if [[ ! -f cache/binaryen.tar.gz ]]; then \
 		curl -o cache/binaryen.tar.gz -L https://github.com/WebAssembly/binaryen/releases/download/version_${BINARYEN_VERSION}/binaryen-version_${BINARYEN_VERSION}-x86_64-linux.tar.gz \
 	; fi
-
+	if [[ ! -d cache/riscv-pk ]]; then \
+		git clone https://github.com/riscv-software-src/riscv-pk cache/riscv-pk && cd cache/riscv-pk && git checkout 7e9b671c0415dfd7b562ac934feb9380075d4aa2 \
+	; fi
 amd: prepare_pkg
 	$(MAKE) -C amd64
-c2w: prepare_pkg
-	$(MAKE) -C c2w
-riscv64: prepare_pkg
+riscv: prepare_pkg
 	$(MAKE) -C riscv64
 tools: prepare_pkg
 	$(MAKE) -C tools

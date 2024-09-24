@@ -8,13 +8,13 @@ build:
 	mkdir cache -p
 	cd cache
 ifeq ($(PREPARED_PKG), true)
-	cp -rf ../cache/wasi-sdk.tar.gz . 
-	cp -rf ../cache/wasi-vfs . 
-	cp -rf ../cache/Bochs . 
-	cp -rf ../cache/wizer.h . 
-	cp -rf ../cache/tinyemu . 
-	cp -rf ../cache/Bochs . 
-	cp -rf ../cache/binaryen.tar.gz . 
+	cp -rf ../cache/wasi-sdk.tar.gz cache/ 
+	cp -rf ../cache/wasi-vfs cache/ 
+	cp -rf ../cache/Bochs cache/ 
+	cp -rf ../cache/wizer.h cache/ 
+	cp -rf ../cache/tinyemu cache/ 
+	cp -rf ../cache/Bochs cache/ 
+	cp -rf ../cache/binaryen.tar.gz cache/
 else
 	if [[ ! -f cache/wasi-sdk.tar.gz ]]; then \
 		curl -o cache/wasi-sdk.tar.gz -fSL https://github.com/WebAssembly/wasi-sdk/releases/download/wasi-sdk-${WASI_SDK_VERSION}/wasi-sdk-${WASI_SDK_VERSION_FULL}-linux.tar.gz \
