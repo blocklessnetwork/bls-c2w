@@ -29,7 +29,7 @@ jobs:
           type: "tar"
           directory: target
           filename: ../bls-c2w-${{ matrix.goos }}.${{ matrix.goarch }}.tar.gz
-          path: c2w*
+          path: bls*
       - name: upload artifact
         uses: actions/upload-release-asset@v1
         env:
