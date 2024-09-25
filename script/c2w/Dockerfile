@@ -16,7 +16,7 @@ ARG EXTERNAL_BUNDLE
 ARG TARGETPLATFORM
 WORKDIR /work
 COPY --link --from=assets / /oci
-COPY --link --from=joing/bls-c2w-tools /tools /tools
+COPY --link --from=ghcr.io/blocklessnetwork/bls-c2w-tools /tools /tools
 RUN mkdir -p /out/oci/rootfs /out/oci/bundle && \
     IS_WIZER=false && \
     if test "${OPTIMIZATION_MODE}" = "wizer" ; then IS_WIZER=true ; fi && \
@@ -37,21 +37,21 @@ RUN mv initconfig.json /out/oci/
 
 FROM ubuntu:22.04 AS rootfs-amd64-dev
 RUN apt-get update -y && apt-get install -y mkisofs
-COPY --link --from=joing/bls-amd64-linux6.1 /rootfs /rootfs
+COPY --link --from=ghcr.io/blocklessnetwork/bls-amd64-linux6.1 /rootfs /rootfs
 COPY --link --from=bundle-dev /out/ /rootfs/
 RUN mkdir -p /rootfs/proc /rootfs/sys /rootfs/mnt /rootfs/run /rootfs/tmp /rootfs/dev /rootfs/var /rootfs/etc && mknod /rootfs/dev/null c 1 3 && chmod 666 /rootfs/dev/null
 RUN mkdir /out/ && mkisofs -l -J -R -o /out/rootfs.bin /rootfs/
 
 FROM scratch AS vm-amd64-dev
-COPY --link --from=joing/bls-amd64-linux6.1 /pack /pack
+COPY --link --from=ghcr.io/blocklessnetwork/bls-amd64-linux6.1 /pack /pack
 COPY --link --from=rootfs-amd64-dev /out/rootfs.bin /pack
 
 
 FROM ubuntu:22.04 AS dev-packed
 ENV WASMTIME_BACKTRACE_DETAILS=1
-COPY --link --from=joing/bls-c2w-tools /tools /tools
+COPY --link --from=ghcr.io/blocklessnetwork/bls-c2w-tools /tools /tools
 COPY --link --from=vm-amd64-dev /pack /pack
-COPY --link --from=joing/bls-tinyemu-wasi-19 /out/bochs /work/bochs
+COPY --link --from=ghcr.io/blocklessnetwork/bls-tinyemu-wasi-19 /out/bochs /work/bochs
 WORKDIR /work
 
 RUN mv bochs bochs-org && /tools/wizer/wizer-debug --allow-wasi --wasm-bulk-memory=true -r _start=wizer.resume --mapdir /pack::/pack -o bochs bochs-org

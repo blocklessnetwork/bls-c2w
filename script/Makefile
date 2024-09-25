@@ -1,7 +1,8 @@
 include inc.mk
 export PREPARED_PKG=true
 
-all: amd riscv tools wasi
+all: 
+	echo ${ARCH}
 
 prepare_pkg:
 	mkdir cache -p
@@ -66,3 +67,9 @@ tools: prepare_pkg
 	$(MAKE) -C tools
 wasi: prepare_pkg
 	$(MAKE) -C wasi
+
+push:
+	$(MAKE) -C amd64 push
+	$(MAKE) -C riscv64 push
+	$(MAKE) -C tools push
+	$(MAKE) -C wasi push

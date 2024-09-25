@@ -1,7 +1,6 @@
 on:
-  pull_request:
-    branches:
-      - main
+  release:
+    types: [created]
   workflow_dispatch:
 
 name: Build Release Linux
@@ -31,9 +30,23 @@ jobs:
         with:
           persist-credentials: false # otherwise, the token used is the GITHUB_TOKEN, instead of your personal access token.
           fetch-depth: 0 # otherwise, there would be errors pushing refs to the destination repository.
+      - name: Edit Toml
+        uses: dmikey/toml-editor@master
+        with:
+          file: "script/inc.mk"
+          key: "VERSION"
+          value: "${{ steps.get_release.outputs.tag_name }}"
       - name: build
         run: |
           cd script
           make
+      - name: Login to Docker Hub
+        run: |
+          echo "${{secrets.GITHUB_TOKEN}}"|docker login ghcr.io -u ${{github.actor}} --password-stdin
+      - name: push
+        run: |
+          cd script
+          make push
+      
+      
     
-        

@@ -11,3 +11,19 @@ WASI_SDK_VERSION=19
 WASI_SDK_VERSION_FULL=${WASI_SDK_VERSION}.0
 WASI_VFS_VERSION=v0.3.0
 BINARYEN_VERSION=114
+OS_ARCH=$(shell uname -m)
+ARCH=amd64
+
+ifeq ($(OS_ARCH), "x86_64")
+	ARCH=amd64
+endif
+
+ifeq ($(OS_ARCH), "aarch64")
+	ARCH=arm64
+endif
+
+ifeq ($(OS_ARCH), "arm64")
+	ARCH=arm64
+endif
+
+IMAGE_TAG_VERSION=v0.0.1
