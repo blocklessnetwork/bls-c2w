@@ -24,7 +24,7 @@ else
 		git checkout "${WIZER_VERSION}" \
 	; fi
 endif
-	docker build -t blocklessnetwork/${IMAGE_NAME}  -f Dockerfile cache --progress=plain
+	docker build -t ghcr.io/blocklessnetwork/${IMAGE_NAME}  -f Dockerfile cache --progress=plain
 
 push:
 	docker push ghcr.io/blocklessnetwork/${IMAGE_NAME}

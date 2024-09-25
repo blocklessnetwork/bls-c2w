@@ -38,7 +38,7 @@ else
 		git clone https://github.com/riscv-software-src/riscv-pk cache/riscv-pk && cd cache/riscv-pk && git checkout 7e9b671c0415dfd7b562ac934feb9380075d4aa2 \
 	; fi
 endif
-	docker build --build-arg TARGETARCH=amd64 -t blocklessnetwork/${IMAGE_NAME} -f Dockerfile cache
+	docker build --build-arg TARGETARCH=amd64 -t ghcr.io/blocklessnetwork/${IMAGE_NAME} -f Dockerfile cache
 
 push:
 	docker push ghcr.io/blocklessnetwork/${IMAGE_NAME}

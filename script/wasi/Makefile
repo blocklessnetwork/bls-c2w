@@ -47,7 +47,7 @@ else
 		curl -o cache/binaryen.tar.gz -L https://github.com/WebAssembly/binaryen/releases/download/version_${BINARYEN_VERSION}/binaryen-version_${BINARYEN_VERSION}-x86_64-linux.tar.gz \
 	; fi
 endif
-	docker build -t blocklessnetwork/${IMAGE_NAME}  -f Dockerfile cache
+	docker build -t ghcr.io/blocklessnetwork/${IMAGE_NAME}  -f Dockerfile cache
 
 push:
 	docker push ghcr.io/blocklessnetwork/${IMAGE_NAME}
