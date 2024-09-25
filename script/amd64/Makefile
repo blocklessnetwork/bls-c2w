@@ -47,6 +47,8 @@ endif
 
 push:
 	docker push ghcr.io/blocklessnetwork/${IMAGE_NAME}
+	docker tag ghcr.io/blocklessnetwork/${IMAGE_NAME} ghcr.io/blocklessnetwork/${IMAGE_NAME}:${IMAGE_TAG_VERSION}
+	docker push ghcr.io/blocklessnetwork/${IMAGE_NAME}:${IMAGE_TAG_VERSION}
 
 clean:
 	rm -rf grub-${GRUB_VERSION}.tar.gz
