@@ -22,7 +22,7 @@ jobs:
         with:
           go-version: "1.21.0"
           check-latest: true
-      - run: env GOOS=${{ matrix.goos }} GOARCH=${{ matrix.goarch }} go build -o target/c2w c2w.go
+      - run: env GOOS=${{ matrix.goos }} GOARCH=${{ matrix.goarch }} go build -o target/bls-c2w c2w.go
       - name: Archive Release
         uses: thedoctor0/zip-release@0.7.1
         with:
