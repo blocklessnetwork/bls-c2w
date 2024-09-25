@@ -34,7 +34,7 @@ jobs:
         uses: dmikey/toml-editor@master
         with:
           file: "script/inc.mk"
-          key: "VERSION"
+          key: "IMAGE_TAG_VERSION"
           value: "${{ steps.get_release.outputs.tag_name }}"
       - name: build
         run: |
