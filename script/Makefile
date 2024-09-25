@@ -67,7 +67,7 @@ tools: prepare_pkg
 wasi: prepare_pkg
 	$(MAKE) -C wasi
 
-build:
+build: prepare_pkg
 	$(MAKE) -C tools
 	$(MAKE) -C wasi
 	$(MAKE) -C amd64
