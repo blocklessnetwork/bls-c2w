@@ -6,12 +6,7 @@ on:
 name: Build Release Linux
 jobs:
   bls-c2w-images:
-    strategy:
-      matrix:
-        include:
-          goos: [darwin, linux, windows]
-          goarch: [amd64, arm64]
-    runs-on: ${{ matrix.runson }}
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
       - name: Get release
