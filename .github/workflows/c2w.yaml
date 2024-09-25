@@ -6,6 +6,10 @@ on:
 name: Build Release Linux
 jobs:
   bls-c2w-images:
+    strategy:
+      matrix:
+        goos: [darwin, linux, windows]
+        goarch: [amd64, arm64]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
