@@ -1,0 +1,52 @@
+on:
+  release:
+    types: [created]
+  workflow_dispatch:
+
+name: Build Release Linux
+jobs:
+  bls-c2w-images:
+    strategy:
+      matrix:
+        include:
+          goos: [darwin, linux, windows]
+          goarch: [amd64, arm64]
+    runs-on: ${{ matrix.runson }}
+    steps:
+      - uses: actions/checkout@v2
+      - name: Get release
+        id: get_release
+        uses: bruceadams/get-release@v1.3.2
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+       - uses: actions/setup-go@v3
+        with:
+          go-version: "1.21.0"
+          check-latest: true
+      - run: |
+        GOOS=${{ matrix.goos }} GOARCH=${{ matrix.goarch }} go build -o target/c2w c2w.go
+      - name: Archive Release
+        uses: thedoctor0/zip-release@0.7.1
+        with:
+          type: "tar"
+          directory: target
+          filename: ../bls-c2w-${{ matrix.goos }}.${{ matrix.goarch }}.tar.gz
+          path: c2w*
+      - name: upload artifact
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        with:
+          upload_url: ${{ steps.get_release.outputs.upload_url }}
+          asset_path: bls-c2w-${{ matrix.goos }}.${{ matrix.goarch }}.tar.gz
+          asset_name: bls-c2w-${{ matrix.goos }}.${{ matrix.goarch }}.tar.gz
+          asset_content_type: application/gzip
+      - name: Publish the Release
+        uses: softprops/action-gh-release@v1
+        with:
+          tag_name: latest
+          files: bls-c2w-${{ matrix.goos }}.${{ matrix.goarch }}.tar.gz
+          prerelease: true
+          fail_on_unmatched_files: true
+      
+    
