@@ -49,6 +49,10 @@ func main() {
 		},
 	}, flags...)
 	app.Action = action
+	if err := app.Run(os.Args); err != nil {
+		fmt.Fprintf(os.Stderr, "%+v\n", err)
+		os.Exit(1)
+	}
 }
 
 func action(clicontext *cli.Context) error {
