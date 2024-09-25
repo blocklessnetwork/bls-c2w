@@ -32,11 +32,8 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ github.token }}
       - name: Edit Toml
-        uses: dmikey/toml-editor@master
-        with:
-          file: "script/inc.mk"
-          key: "IMAGE_TAG_VERSION"
-          value: "${{ steps.get_release.outputs.tag_name }}"
+        run: |
+          sed -i 's/^IMAGE_TAG_VERSION=.*/IMAGE_TAG_VERSION=${{ steps.get_release.outputs.tag_name }}/g' script/inc.mk
       - name: build
         run: |
           cd script
