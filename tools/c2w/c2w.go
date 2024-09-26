@@ -12,14 +12,14 @@ import (
 	"path/filepath"
 	"time"
 
+	c2w "github.com/blocklessnetwork/bls-c2w"
 	"github.com/containerd/containerd/archive"
 	"github.com/urfave/cli"
 )
 
 const defaultOutputFile = "bls-out.wasm"
 
-//go:embed script/c2w/Dockerfile
-var dockerfile string
+var dockerfile = c2w.Dockerfile
 
 func main() {
 	app := cli.NewApp()
@@ -75,7 +75,7 @@ func action(clicontext *cli.Context) error {
 		return err
 	}
 	srcImgName := arg1
-	if err := prepareSourceImg(builderPath, srcImgName, srcImgPath, clicontext.String("target-arch")); err != nil {
+	if err := preparedImage(builderPath, srcImgName, srcImgPath, clicontext.String("target-arch")); err != nil {
 		return fmt.Errorf("failed to prepare image: %w", err)
 	}
 	return build(builderPath, srcImgPath, destDir, destFile, clicontext)
@@ -118,7 +118,7 @@ func build(builderPath string, srcImgPath string, destDir, destFile string, clic
 }
 
 // save the image to temp directory
-func prepareSourceImg(builderPath, imgName, tmpdir, targetarch string) error {
+func preparedImage(builderPath, imgName, tmpdir, targetarch string) error {
 	log.Printf("saving %q to %q\n", imgName, tmpdir)
 	needsPull := false
 	if idata, err := exec.Command(builderPath, "image", "inspect", imgName).Output(); err != nil {
