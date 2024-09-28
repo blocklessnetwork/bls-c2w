@@ -8,8 +8,8 @@ jobs:
   bls-c2w-images:
     strategy:
       matrix:
-        goos: [linux]
-        goarch: [amd64]
+        goos: [darwin, linux]
+        goarch: [amd64, arm64]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
