@@ -93,7 +93,7 @@ func main() {
 				fmt.Fprintf(os.Stderr, "failed AcceptQemu: %v\n", err)
 			}
 		}()
-		var cmd *exec.Cmd = exec.Command("bls-runtime", append([]string{"run", "--tcplisten=" + *wasiAddr, "--env='LISTEN_FDS=1'", "--"}, args...)...)
+		var cmd *exec.Cmd = exec.Command("bls-runtime", append([]string{"--tcplisten=" + *wasiAddr, "--env='LISTEN_FDS=1'", "--"}, args...)...)
 		cmd.Stdin = os.Stdin
 		cmd.Stdout = os.Stdout
 		cmd.Stderr = os.Stderr
