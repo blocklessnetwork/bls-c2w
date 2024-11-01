@@ -19,7 +19,7 @@ import (
 const (
 	gatewayIP = "192.168.127.1"
 	vmIP      = "192.168.127.3"
-	vmMAC     = "02:09:50:00:00:01"
+	vmMAC     = "02:00:00:00:00:01"
 )
 
 func main() {
@@ -93,7 +93,7 @@ func main() {
 				fmt.Fprintf(os.Stderr, "failed AcceptQemu: %v\n", err)
 			}
 		}()
-		var cmd *exec.Cmd = exec.Command("bls-runtime", append([]string{"--tcplisten=" + *wasiAddr, "--env='LISTEN_FDS=1'", "--"}, args...)...)
+		var cmd = exec.Command("bls-runtime", append([]string{"--tcplisten=" + *wasiAddr, "--env='LISTEN_FDS=1'", "--"}, args...)...)
 		cmd.Stdin = os.Stdin
 		cmd.Stdout = os.Stdout
 		cmd.Stderr = os.Stderr
