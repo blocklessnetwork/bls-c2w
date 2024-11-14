@@ -23,8 +23,12 @@ const (
 )
 
 func main() {
-	var portFlags sliceFlags
+	var (
+		portFlags   sliceFlags
+		volumeFlags sliceFlags
+	)
 	flag.Var(&portFlags, "p", "map port between host and guest (host:guest). -mac must be set correctly.")
+	flag.Var(&volumeFlags, "v", "map directory between host and guest (host_dir::guest_dir or host_dir)")
 	var (
 		debug    = flag.Bool("debug", false, "enable debug print")
 		listenWS = flag.Bool("listen-ws", false, "listen on a websocket port specified as argument")
@@ -53,6 +57,7 @@ func main() {
 	}
 	if *debug {
 		fmt.Fprintf(os.Stderr, "port mapping: %+v\n", forwards)
+		fmt.Fprintf(os.Stderr, "volume mapping: %+v\n", volumeFlags)
 	}
 	config := &gvntypes.Configuration{
 		Debug:             *debug,
@@ -99,6 +104,11 @@ func main() {
 		// Add env-file parameter if provided
 		if *envFile != "" {
 			cmdArgs = append(cmdArgs, "--env-file="+*envFile)
+		}
+		// Add volume mounts
+		for _, volume := range volumeFlags {
+			// The volume string can be either "host_dir" or "host_dir::guest_dir"
+			cmdArgs = append(cmdArgs, "--dir="+volume)
 		}
 		// Append the remaining arguments
 		cmdArgs = append(cmdArgs, "--")
