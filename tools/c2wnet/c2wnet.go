@@ -31,6 +31,7 @@ func main() {
 		invoke   = flag.Bool("invoke", false, "invoke the container with NW support")
 		mac      = flag.String("mac", vmMAC, "mac address assigned to the container")
 		wasiAddr = flag.String("wasi-addr", "127.0.0.1:1234", "IP address used to communicate between wasi and network stack (valid only with invoke flag)") // TODO: automatically use empty random port or unix socket
+		envFile  = flag.String("env-file", "", "path to environment file")
 	)
 	flag.Parse()
 	args := flag.Args()
@@ -93,7 +94,21 @@ func main() {
 				fmt.Fprintf(os.Stderr, "failed AcceptQemu: %v\n", err)
 			}
 		}()
-		var cmd = exec.Command("bls-runtime", append([]string{"--tcplisten=" + *wasiAddr, "--env='LISTEN_FDS=1'", "--"}, args...)...)
+
+		cmdArgs := []string{"--tcplisten=" + *wasiAddr, "--env='LISTEN_FDS=1'"}
+		// Add env-file parameter if provided
+		if *envFile != "" {
+			cmdArgs = append(cmdArgs, "--env-file="+*envFile)
+		}
+		// Append the remaining arguments
+		cmdArgs = append(cmdArgs, "--")
+		cmdArgs = append(cmdArgs, args...)
+
+		if *debug {
+			fmt.Fprintf(os.Stderr, "executing command:\nbls-runtime %s\n\n", strings.Join(cmdArgs, " "))
+		}
+
+		var cmd = exec.Command("bls-runtime", cmdArgs...)
 		cmd.Stdin = os.Stdin
 		cmd.Stdout = os.Stdout
 		cmd.Stderr = os.Stderr
