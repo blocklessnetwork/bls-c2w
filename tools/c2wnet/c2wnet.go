@@ -118,7 +118,7 @@ func main() {
 		nargs := []string{}
 		for _, v := range args {
 			if v == "--net=socket" {
-				nargs = append(nargs, "--net=socket=blslistenfd="+*listenfd)
+				nargs = append(nargs, "--net=socket=listenfd="+*listenfd)
 			} else {
 				nargs = append(nargs, v)
 			}
