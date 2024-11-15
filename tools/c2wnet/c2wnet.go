@@ -19,7 +19,7 @@ import (
 const (
 	gatewayIP = "192.168.127.1"
 	vmIP      = "192.168.127.3"
-	vmMAC     = "02:00:00:00:00:01"
+	vmMAC     = "02:05:03:00:00:01"
 )
 
 func main() {
@@ -118,7 +118,7 @@ func main() {
 		nargs := []string{}
 		for _, v := range args {
 			if v == "--net=socket" {
-				nargs = append(nargs, "--net=socket=listenfd="+*listenfd)
+				nargs = append(nargs, "--net=socket=blslistenfd="+*listenfd)
 			} else {
 				nargs = append(nargs, v)
 			}
