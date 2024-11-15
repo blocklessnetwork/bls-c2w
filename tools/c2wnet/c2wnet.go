@@ -19,7 +19,7 @@ import (
 const (
 	gatewayIP = "192.168.127.1"
 	vmIP      = "192.168.127.3"
-	vmMAC     = "02:00:00:00:00:01"
+	vmMAC     = "02:05:03:00:00:01"
 )
 
 func main() {
@@ -36,6 +36,7 @@ func main() {
 		mac      = flag.String("mac", vmMAC, "mac address assigned to the container")
 		wasiAddr = flag.String("wasi-addr", "127.0.0.1:1234", "IP address used to communicate between wasi and network stack (valid only with invoke flag)") // TODO: automatically use empty random port or unix socket
 		envFile  = flag.String("env-file", "", "path to environment file")
+		listenfd  = flag.String("listenfd", "", "listenfd is listen file descriptor in wasi.")
 	)
 	flag.Parse()
 	args := flag.Args()
@@ -100,7 +101,7 @@ func main() {
 			}
 		}()
 
-		cmdArgs := []string{"--tcplisten=" + *wasiAddr, "--env='LISTEN_FDS=1'"}
+		cmdArgs := []string{"--tcplisten=" + *wasiAddr, "--sockbase=" + *listenfd, "--env='LISTEN_FDS=1'"}
 		// Add env-file parameter if provided
 		if *envFile != "" {
 			cmdArgs = append(cmdArgs, "--env-file="+*envFile)
@@ -112,7 +113,17 @@ func main() {
 		}
 		// Append the remaining arguments
 		cmdArgs = append(cmdArgs, "--")
-		cmdArgs = append(cmdArgs, args...)
+		
+		//network listenfd.
+		nargs := []string{}
+		for _, v := range args {
+			if v == "--net=socket" {
+				nargs = append(nargs, "--net=socket=blslistenfd="+*listenfd)
+			} else {
+				nargs = append(nargs, v)
+			}
+		}
+		cmdArgs = append(cmdArgs, nargs...)
 
 		if *debug {
 			fmt.Fprintf(os.Stderr, "executing command:\nbls-runtime %s\n\n", strings.Join(cmdArgs, " "))
