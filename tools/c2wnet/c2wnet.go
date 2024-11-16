@@ -101,7 +101,7 @@ func main() {
 			}
 		}()
 
-		cmdArgs := []string{"--tcplisten=" + *wasiAddr, "--sockbase=" + *listenfd, "--env='LISTEN_FDS=1'"}
+		cmdArgs := []string{"--tcplisten=" + *wasiAddr + "::" + *listenfd, "--env='LISTEN_FDS=1'"}
 		// Add env-file parameter if provided
 		if *envFile != "" {
 			cmdArgs = append(cmdArgs, "--env-file="+*envFile)
