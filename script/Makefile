@@ -28,8 +28,7 @@ prepare_pkg:
 
 	if [[ ! -d cache/Bochs ]]; then \
 		git clone ${BOCHS_REPO} cache/Bochs  &&\
-		cd cache/Bochs &&\
-		git checkout ${BOCHS_REPO_VERSION} \
+		cd cache/Bochs \
 	; fi
 	if [[ ! -d cache/wasi-vfs ]]; then \
 		git clone https://github.com/kateinoigakukun/wasi-vfs.git cache/wasi-vfs --recurse-submodules  &&\
