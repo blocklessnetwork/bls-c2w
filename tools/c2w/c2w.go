@@ -12,14 +12,14 @@ import (
 	"path/filepath"
 	"time"
 
-	c2w "github.com/blocklessnetwork/bls-c2w"
+	blsc2w "github.com/blocklessnetwork/bls-c2w"
 	"github.com/containerd/containerd/archive"
 	"github.com/urfave/cli"
 )
 
 const defaultOutputFile = "bls-out.wasm"
 
-var dockerfile = c2w.Dockerfile
+var dockerfile = blsc2w.Dockerfile
 
 func main() {
 	app := cli.NewApp()
@@ -57,6 +57,7 @@ func main() {
 
 func action(clicontext *cli.Context) error {
 	arg1 := clicontext.Args().First()
+	outputPath := clicontext.Args().Get(1)
 	if arg1 == "" {
 		return fmt.Errorf("specify image name")
 	}
@@ -77,6 +78,16 @@ func action(clicontext *cli.Context) error {
 	srcImgName := arg1
 	if err := preparedImage(builderPath, srcImgName, srcImgPath, clicontext.String("target-arch")); err != nil {
 		return fmt.Errorf("failed to prepare image: %w", err)
+	}
+	if outputPath != "" {
+		d, f := filepath.Split(outputPath)
+		destDir, err = filepath.Abs(d)
+		if err != nil {
+			return err
+		}
+		if f != "" {
+			destFile = f
+		}
 	}
 	return build(builderPath, srcImgPath, destDir, destFile, clicontext)
 }
