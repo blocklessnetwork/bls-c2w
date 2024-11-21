@@ -37,6 +37,7 @@ func main() {
 		wasiAddr = flag.String("wasi-addr", "127.0.0.1:1234", "IP address used to communicate between wasi and network stack (valid only with invoke flag)") // TODO: automatically use empty random port or unix socket
 		envFile  = flag.String("env-file", "", "path to environment file")
 		listenfd  = flag.String("listenfd", "", "listenfd is listen file descriptor in wasi.")
+		runtimeArgs  = flag.String("runtime-args", "", "arguments for the runtime.")
 	)
 	flag.Parse()
 	args := flag.Args()
@@ -100,8 +101,15 @@ func main() {
 				fmt.Fprintf(os.Stderr, "failed AcceptQemu: %v\n", err)
 			}
 		}()
-
-		cmdArgs := []string{"--tcplisten=" + *wasiAddr + "::" + *listenfd, "--env='LISTEN_FDS=1'"}
+		var tcplisten string = "--tcplisten=" + *wasiAddr;
+		if *listenfd != "" {
+			tcplisten = tcplisten + "::" + *listenfd
+		}
+		cmdArgs := []string{tcplisten, "--env='LISTEN_FDS=1'"}
+		if *runtimeArgs != "" {
+			args := strings.Split(*runtimeArgs, " ")
+			cmdArgs = append(cmdArgs, args...)
+		}
 		// Add env-file parameter if provided
 		if *envFile != "" {
 			cmdArgs = append(cmdArgs, "--env-file="+*envFile)
@@ -113,12 +121,16 @@ func main() {
 		}
 		// Append the remaining arguments
 		cmdArgs = append(cmdArgs, "--")
-		
+
 		//network listenfd.
 		nargs := []string{}
 		for _, v := range args {
 			if v == "--net=socket" {
-				nargs = append(nargs, "--net=socket=blslistenfd="+*listenfd)
+				var params string = "--net=socket"
+				if *listenfd != "" {
+					params = params + *listenfd
+				}
+				nargs = append(nargs, params)
 			} else {
 				nargs = append(nargs, v)
 			}
