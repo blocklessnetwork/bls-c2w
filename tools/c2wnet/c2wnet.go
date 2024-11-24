@@ -128,7 +128,7 @@ func main() {
 			if v == "--net=socket" {
 				var params string = "--net=socket"
 				if *listenfd != "" {
-					params = params + *listenfd
+					params = params + "=blslistenfd=" + *listenfd
 				}
 				nargs = append(nargs, params)
 			} else {
