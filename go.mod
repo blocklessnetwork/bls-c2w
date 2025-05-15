@@ -6,7 +6,7 @@ require (
 	github.com/containerd/containerd v1.7.27
 	github.com/containers/gvisor-tap-vsock v0.7.5
 	github.com/urfave/cli v1.22.12
-	golang.org/x/net v0.33.0
+	golang.org/x/net v0.38.0
 )
 
 require (
@@ -33,10 +33,10 @@ require (
 	github.com/sirupsen/logrus v1.9.3 // indirect
 	github.com/u-root/uio v0.0.0-20240224005618-d2acac8f3701 // indirect
 	go.opencensus.io v0.24.0 // indirect
-	golang.org/x/crypto v0.31.0 // indirect
+	golang.org/x/crypto v0.36.0 // indirect
 	golang.org/x/mod v0.19.0 // indirect
 	golang.org/x/sync v0.10.0 // indirect
-	golang.org/x/sys v0.28.0 // indirect
+	golang.org/x/sys v0.31.0 // indirect
 	golang.org/x/time v0.3.0 // indirect
 	golang.org/x/tools v0.23.0 // indirect
 	google.golang.org/genproto/googleapis/rpc v0.0.0-20240401170217-c3f982113cda // indirect
