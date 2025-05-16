@@ -71,7 +71,7 @@ if [ $? -ne 0 ]; then
     exit 1
 fi
 # Check if the download was successful
-if [ ! -f bls-c2w || -f bls-c2wnet ]; then
+if [[ ! -f bls-c2w || ! -f bls-c2wnet ]]; then
     echo "Error: Blockless C2W binary not found in the downloaded archive."
     exit 1
 fi
