@@ -6,7 +6,7 @@ This project aims to compile docker image into webassembly format, leveraging pr
 Exceute the shell downloads the binary
 
 ```bash
-curl -L https://raw.githubusercontent.com/blocklessnetwork/bls-c2w/refs/heads/main/download.sh |bash
+curl -L https://raw.githubusercontent.com/blocklessnetwork/bls-c2w/refs/heads/main/download.sh | bash
 ```
 
 after execute you should get output 
@@ -59,13 +59,13 @@ COPY hello /
 CMD ["/hello"]
 DEOF
 
-docker build -t shello .
+docker build -t hello .
 ```
 
-Convert the 'shello' image to wasm file
+Convert the 'hello' image to wasm file
 
 ```bash
-bls-c2w shello
+bls-c2w hello
 ```
 
 After execute the  bls-c2w, the `bls-out.wasm` file will generated.
@@ -75,7 +75,7 @@ Before execute the wasm, download the bls-runtime
 ```bash
 sh -c "curl https://raw.githubusercontent.com/blessnetwork/bls-runtime/refs/heads/main/install.sh | bash"
 
-#execute the wasm file
+# execute the wasm file
 bls-runtime bls-out.wasm
 ```
 
